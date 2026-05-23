@@ -192,7 +192,35 @@ Erros **nunca** são engolidos silenciosamente. Use exceções com mensagens des
 - Mensagens ao usuário em português.
 - Loading states explícitos — nunca deixar a UI travar sem feedback.
 
-## 13. Como pedir ajuda
+## 13. Sample packs (modo Sampler)
+
+Os samples do modo Sampler são declarados em `src/constants/samplePacks.ts`. Cada pack vira uma opção no card "Sample pack" da UI, sem precisar mexer em mais nada — o `SamplerSynth` escolhe o backend (looper ou sampler discreto) a partir do metadado.
+
+### Como adicionar um sample novo
+
+1. Coloque o arquivo de áudio em `public/samples/` (qualquer subpasta serve, mas não commite — `.mp3`/`.wav` estão no `.gitignore`).
+2. Adicione uma entrada ao array `SAMPLE_PACKS` em `src/constants/samplePacks.ts`:
+
+```ts
+{
+  id: 'meu-novo-sample',
+  label: 'Meu Sample',
+  description: '...',
+  urls: { D4: '/samples/meu-novo.wav' },
+  baseMidi: 62,
+}
+```
+
+### Convenções
+
+- **Loop é o default.** Todo pack toca em loop infinito (`Tone.Player`) a não ser que declare `loop: false`.
+- Para um pack multiamostra estilo piano (sem loop, com nota MIDI por arquivo), declare `loop: false` e use múltiplas chaves em `urls` (`C3`, `C4`, `C5`…).
+- `baseMidi` é a nota MIDI **original** da amostra — usada para calcular transposição via `playbackRate` quando o gesto modula `pitch`. Para o loop em D4, `baseMidi: 62`.
+- `id` deve ser único, kebab-case.
+- O caminho em `urls` é relativo ao `public/` (Vite serve direto).
+- **Pontos de loop** são detectados automaticamente: o `SamplerSynth` analisa o buffer no `onload` e apara silêncio/decay nas pontas (`detectLoopPoints` em `src/audio/loopPoints.ts`). Para fixar pontos manualmente, declare `loopStart` e `loopEnd` em segundos no pack — sobrescrevem a detecção automática. Um crossfade de 8 ms (`LOOP_FADE_S`) é aplicado nas junções para suavizar a costura.
+
+## 14. Como pedir ajuda
 
 Se você é um subagente executando uma task e:
 - Encontra ambiguidade na spec → **pergunte ao controlador**, não decida.
@@ -202,7 +230,7 @@ Se você é um subagente executando uma task e:
 
 Não tente "ser esperto" mudando o escopo silenciosamente.
 
-## 14. O que está fora do escopo do MVP
+## 15. O que está fora do escopo do MVP
 
 - WebMIDI in/out
 - Faust → AudioWorklet customizado
@@ -214,6 +242,6 @@ Não tente "ser esperto" mudando o escopo silenciosamente.
 
 Se uma task pede algo dessa lista, é um erro — consulte o controlador.
 
-## 15. Status atual
+## 16. Status atual
 
 Use `git log --oneline` para entender o estado. O plano em `docs/superpowers/plans/2026-05-23-sintetizai.md` é a roadmap canônica. Cada task lá tem checkboxes — o estado da execução é refletido nos commits, não em variáveis externas.
