@@ -3,6 +3,7 @@ import type { FrameDetection } from '@/types/vision';
 import type { GestureBinding, GestureFeatureSample } from '@/types/gesture';
 import type { SynthMode } from '@/types/audio';
 import { mapValue } from './curves';
+import { publishParam } from '@/state/paramThrottle';
 
 export function extractFeatures(detection: FrameDetection): readonly GestureFeatureSample[] {
   const out: GestureFeatureSample[] = [];
@@ -33,6 +34,7 @@ export function applyBindings(
   mode: SynthMode,
 ): void {
   const features = extractFeatures(detection);
+  const now = detection.timestampMs;
   for (const binding of bindings) {
     const sample = features.find(
       (f) => f.hand === binding.hand && f.feature === binding.feature,
@@ -47,5 +49,6 @@ export function applyBindings(
       binding.curve,
     );
     mode.setParam(binding.target, mapped, binding.smoothingMs);
+    publishParam(binding.target, mapped, now);
   }
 }
