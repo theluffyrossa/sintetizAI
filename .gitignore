@@ -38,6 +38,10 @@ Thumbs.db
 
 public/models/*.task
 public/mediapipe/wasm/
+public/samples/**/*.mp3
+public/samples/**/*.wav
+public/samples/**/*.ogg
+public/samples/**/*.flac
 
 test-results
 playwright-report
