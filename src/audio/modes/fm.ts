@@ -1,13 +1,16 @@
 import * as Tone from 'tone';
 import type { SynthMode } from '@/types/audio';
+import { FxChain } from '@/audio/fxChain';
 
 export class FmSynth implements SynthMode {
   public readonly kind = 'fm' as const;
   private synth: Tone.FMSynth;
   private out: Tone.Gain;
+  private fx: FxChain;
 
   constructor() {
     this.out = new Tone.Gain(0.7);
+    this.fx = new FxChain();
     this.synth = new Tone.FMSynth({
       harmonicity: 3,
       modulationIndex: 10,
@@ -15,7 +18,7 @@ export class FmSynth implements SynthMode {
       modulation: { type: 'square' },
       modulationEnvelope: { attack: 0.5, decay: 0, sustain: 1, release: 0.5 },
     });
-    this.synth.chain(this.out, Tone.getDestination());
+    this.synth.chain(this.out, this.fx.input);
   }
 
   async start(): Promise<void> {
@@ -35,7 +38,13 @@ export class FmSynth implements SynthMode {
       case 'amplitude':
         this.out.gain.setTargetAtTime(value, Tone.now(), rampSeconds);
         return;
+      case 'pitch': {
+        const freq = Tone.Frequency(value, 'midi').toFrequency();
+        this.synth.frequency.setTargetAtTime(freq, Tone.now(), rampSeconds);
+        return;
+      }
       default:
+        this.fx.setParam(name, value, smoothingMs);
         return;
     }
   }
@@ -52,5 +61,6 @@ export class FmSynth implements SynthMode {
   dispose(): void {
     this.synth.dispose();
     this.out.dispose();
+    this.fx.dispose();
   }
 }

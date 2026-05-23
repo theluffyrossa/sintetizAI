@@ -16,4 +16,8 @@ describe('FmSynth', () => {
   it('deve aceitar setParam para amplitude sem lançar erro', () => {
     expect(() => synth.setParam('amplitude', 0.5, 10)).not.toThrow();
   });
+
+  it('deve aceitar setParam para pitch sem lançar erro', () => {
+    expect(() => synth.setParam('pitch', 60, 10)).not.toThrow();
+  });
 });

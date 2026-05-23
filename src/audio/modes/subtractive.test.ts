@@ -20,6 +20,10 @@ describe('SubtractiveSynth', () => {
     expect(() => synth.setParam('resonance', 5, 10)).not.toThrow();
   });
 
+  it('deve aceitar setParam para pitch sem lançar erro', () => {
+    expect(() => synth.setParam('pitch', 60, 10)).not.toThrow();
+  });
+
   it('deve ignorar parâmetros desconhecidos silenciosamente', () => {
     expect(() => synth.setParam('inexistente', 1, 10)).not.toThrow();
   });
