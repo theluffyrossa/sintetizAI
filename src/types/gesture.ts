@@ -6,14 +6,24 @@ export type GestureFeatureKind =
   | 'pinchDistance'
   | 'palmOpenness'
   | 'handsDistance'
-  | 'fistDetected';
+  | 'fistDetected'
+  | 'handTilt'
+  | 'handVelocity'
+  | 'handDepth'
+  | 'middlePinch'
+  | 'fingerSpread';
 
 export type GestureTargetParam =
   | 'pitch'
   | 'amplitude'
   | 'cutoff'
   | 'resonance'
+  | 'lfoRate'
   | 'lfoDepth'
+  | 'drive'
+  | 'delayMix'
+  | 'reverbMix'
+  | 'chorusMix'
   | 'modulationIndex'
   | 'sustain';
 

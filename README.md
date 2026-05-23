@@ -18,6 +18,34 @@ npm install
 Baixe o modelo MediaPipe (instruções em `public/models/README.md`) e os samples opcionais
 (instruções em `public/samples/README.md`).
 
+## Como usar
+
+Clique em **Iniciar áudio e câmera**, autorize o acesso à webcam e posicione as mãos no
+enquadramento. Os gestos padrão controlam síntese e efeitos em tempo real:
+
+### Mão direita
+- **Posição vertical (Y)** → altura da nota (pitch, escala quantizada)
+- **Pinça (polegar + indicador)** → volume (amplitude)
+- **Palma aberta** → profundidade do LFO (varredura dinâmica do filtro)
+- **Inclinação da mão (roll)** → velocidade do LFO
+- **Profundidade (afasta/aproxima da câmera)** → quantidade de chorus
+- **Leque dos dedos (espalhamento)** → sustain do envelope
+
+### Mão esquerda
+- **Posição horizontal (X)** → cutoff do filtro
+- **Pinça (polegar + indicador)** → ressonância do filtro
+- **Palma aberta** → drive (saturação/distorção)
+- **Velocidade da mão** → quantidade de delay
+- **Pinça (polegar + médio)** → índice de modulação (modo FM)
+
+### Duas mãos
+- **Distância entre as mãos** → quantidade de reverb
+
+### Modos de síntese
+Use o seletor no topo direito para alternar entre **Subtractive**, **FM** e **Sampler** —
+todos passam pela mesma cadeia de efeitos (filtro multimodo + LFO, drive, chorus, delay,
+reverb).
+
 ## Comandos
 
 ```bash

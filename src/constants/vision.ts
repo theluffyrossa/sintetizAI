@@ -15,3 +15,9 @@ export const FINGER_TIP_INDICES = [
   RING_TIP_INDEX,
   PINKY_TIP_INDEX,
 ] as const;
+export const MIDDLE_MCP_INDEX = 9;
+export const HAND_TILT_NORM_ANGLE = Math.PI / 2;
+export const HAND_VELOCITY_MAX_NORM = 3.0;
+export const HAND_DEPTH_MIN = -0.15;
+export const HAND_DEPTH_MAX = 0.15;
+export const FINGER_SPREAD_REF_DIST = 0.30;
