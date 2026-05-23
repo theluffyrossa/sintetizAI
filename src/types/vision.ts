@@ -24,3 +24,8 @@ export interface FrameDetection {
   readonly hands: readonly DetectedHand[];
   readonly timestampMs: number;
 }
+
+export interface Point2D {
+  readonly x: number;
+  readonly y: number;
+}

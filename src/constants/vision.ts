@@ -6,3 +6,12 @@ export const MEDIAPIPE_WASM_BASE_URL = '/mediapipe/wasm';
 export const THUMB_TIP_INDEX = 4;
 export const INDEX_TIP_INDEX = 8;
 export const WRIST_INDEX = 0;
+export const MIDDLE_TIP_INDEX = 12;
+export const RING_TIP_INDEX = 16;
+export const PINKY_TIP_INDEX = 20;
+export const FINGER_TIP_INDICES = [
+  INDEX_TIP_INDEX,
+  MIDDLE_TIP_INDEX,
+  RING_TIP_INDEX,
+  PINKY_TIP_INDEX,
+] as const;
