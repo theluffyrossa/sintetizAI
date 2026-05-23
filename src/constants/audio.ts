@@ -1,0 +1,10 @@
+export const AUDIO_BUFFER_SIZE = 128;
+export const DEFAULT_SMOOTHING_MS = 12;
+export const PITCH_MIN_MIDI = 48;
+export const PITCH_MAX_MIDI = 84;
+export const CUTOFF_MIN_HZ = 200;
+export const CUTOFF_MAX_HZ = 8000;
+export const RESONANCE_MIN = 0.5;
+export const RESONANCE_MAX = 20;
+export const AMPLITUDE_MIN = 0;
+export const AMPLITUDE_MAX = 1;
