@@ -32,8 +32,11 @@ export function MainPage(): JSX.Element {
 
   const [bootstrapping, setBootstrapping] = useState(false);
 
+  const [startError, setStartError] = useState<string | null>(null);
+
   const handleStart = useCallback(async (): Promise<void> => {
     setBootstrapping(true);
+    setStartError(null);
     try {
       await start();
       await startAudio();
@@ -41,6 +44,8 @@ export function MainPage(): JSX.Element {
       setAudioStarted(true);
     } catch (e) {
       console.error('handleStart failed', e);
+      const msg = e instanceof Error ? `${e.name}: ${e.message}` : String(e);
+      setStartError(msg);
     } finally {
       setBootstrapping(false);
     }
@@ -74,17 +79,18 @@ export function MainPage(): JSX.Element {
         />
         <LandmarkOverlay width={VIDEO_W} height={VIDEO_H} detectionRef={detectionRef} />
         {status !== 'ready' && (
-          <div className="absolute inset-0 grid place-items-center bg-black/70 rounded">
-            {status === 'error' ? (
-              <p className="text-red-400 text-sm max-w-xs text-center px-4">{error}</p>
-            ) : (
-              <button
-                onClick={(): void => { void handleStart(); }}
-                disabled={bootstrapping}
-                className="px-4 py-2 rounded bg-accent text-black text-sm font-medium disabled:opacity-50"
-              >
-                {bootstrapping ? 'Iniciando…' : 'Iniciar áudio e câmera'}
-              </button>
+          <div className="absolute inset-0 grid place-items-center bg-black/70 rounded gap-3 p-4">
+            <button
+              onClick={(): void => { void handleStart(); }}
+              disabled={bootstrapping}
+              className="px-4 py-2 rounded bg-accent text-black text-sm font-medium disabled:opacity-50"
+            >
+              {bootstrapping ? 'Iniciando…' : 'Iniciar áudio e câmera'}
+            </button>
+            {(status === 'error' || startError !== null) && (
+              <p className="text-red-400 text-xs max-w-xs text-center break-words">
+                {startError ?? error}
+              </p>
             )}
           </div>
         )}
