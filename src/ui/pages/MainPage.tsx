@@ -8,6 +8,7 @@ import { LandmarkOverlay } from '@/vision/LandmarkOverlay';
 import { Visualizer } from '@/ui/components/Visualizer';
 import { Knob } from '@/ui/components/Knob';
 import { ModeSelector } from '@/ui/components/ModeSelector';
+import { PresetPanel } from '@/ui/components/PresetPanel';
 import { getCurrentMode, setMode, startAudio } from '@/audio/engine';
 import { applyBindings } from '@/mapping/gestureMapper';
 import type { FrameDetection } from '@/types/vision';
@@ -102,6 +103,8 @@ export function MainPage(): JSX.Element {
         </div>
 
         <Visualizer width={640} height={120} />
+
+        <PresetPanel />
       </section>
     </main>
   );
