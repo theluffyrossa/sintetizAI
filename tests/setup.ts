@@ -3,8 +3,8 @@ import { vi } from 'vitest';
 
 vi.mock('tone', () => {
   const param = { setTargetAtTime: vi.fn() };
-  function MockNode(): void {
-    Object.assign(this as unknown as object, {
+  function MockNode(this: object): void {
+    Object.assign(this, {
       chain: vi.fn(),
       connect: vi.fn(),
       dispose: vi.fn(),
