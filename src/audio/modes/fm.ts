@@ -1,0 +1,56 @@
+import * as Tone from 'tone';
+import type { SynthMode } from '@/types/audio';
+
+export class FmSynth implements SynthMode {
+  public readonly kind = 'fm' as const;
+  private synth: Tone.FMSynth;
+  private out: Tone.Gain;
+
+  constructor() {
+    this.out = new Tone.Gain(0.7);
+    this.synth = new Tone.FMSynth({
+      harmonicity: 3,
+      modulationIndex: 10,
+      envelope: { attack: 0.01, decay: 0.2, sustain: 0.5, release: 0.5 },
+      modulation: { type: 'square' },
+      modulationEnvelope: { attack: 0.5, decay: 0, sustain: 1, release: 0.5 },
+    });
+    this.synth.chain(this.out, Tone.getDestination());
+  }
+
+  async start(): Promise<void> {
+    await Tone.start();
+  }
+
+  stop(): void {
+    this.synth.triggerRelease();
+  }
+
+  setParam(name: string, value: number, smoothingMs: number): void {
+    const rampSeconds = Math.max(smoothingMs, 1) / 1000;
+    switch (name) {
+      case 'modulationIndex':
+        this.synth.modulationIndex.setTargetAtTime(value, Tone.now(), rampSeconds);
+        return;
+      case 'amplitude':
+        this.out.gain.setTargetAtTime(value, Tone.now(), rampSeconds);
+        return;
+      default:
+        return;
+    }
+  }
+
+  noteOn(midiNote: number, velocity: number): void {
+    const freq = Tone.Frequency(midiNote, 'midi').toFrequency();
+    this.synth.triggerAttack(freq, Tone.now(), Math.max(0, Math.min(1, velocity)));
+  }
+
+  noteOff(_midiNote: number): void {
+    this.synth.triggerRelease();
+  }
+
+  dispose(): void {
+    this.synth.dispose();
+    this.out.dispose();
+  }
+}
