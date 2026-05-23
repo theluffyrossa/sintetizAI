@@ -35,12 +35,12 @@ export function MainPage(): JSX.Element {
   const handleStart = useCallback(async (): Promise<void> => {
     setBootstrapping(true);
     try {
+      await start();
       await startAudio();
       await setMode(mode);
-      await start();
       setAudioStarted(true);
     } catch (e) {
-      console.error('start failed', e);
+      console.error('handleStart failed', e);
     } finally {
       setBootstrapping(false);
     }
@@ -52,7 +52,7 @@ export function MainPage(): JSX.Element {
   }, [audioStarted, setModeStore]);
 
   useFrameLoop({
-    video: videoRef.current,
+    videoRef,
     enabled: status === 'ready',
     onFrame: (detection): void => {
       detectionRef.current = detection;

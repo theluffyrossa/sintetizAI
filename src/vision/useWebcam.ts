@@ -42,7 +42,8 @@ export function useWebcam(): UseWebcamResult {
       }
       setStatus('ready');
     } catch (e) {
-      const message = e instanceof Error ? e.message : 'Falha ao acessar a webcam';
+      console.error('useWebcam.start failed', e);
+      const message = e instanceof Error ? `${e.name}: ${e.message}` : 'Falha ao acessar a webcam';
       setError(message);
       setStatus('error');
     }

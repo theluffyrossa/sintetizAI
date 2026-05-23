@@ -3,12 +3,12 @@ import { detectFrame, initHandLandmarker } from './handLandmarker';
 import type { FrameDetection } from '@/types/vision';
 
 export interface UseFrameLoopOptions {
-  readonly video: HTMLVideoElement | null;
+  readonly videoRef: React.RefObject<HTMLVideoElement | null>;
   readonly enabled: boolean;
   readonly onFrame: (detection: FrameDetection) => void;
 }
 
-export function useFrameLoop({ video, enabled, onFrame }: UseFrameLoopOptions): void {
+export function useFrameLoop({ videoRef, enabled, onFrame }: UseFrameLoopOptions): void {
   const rafRef = useRef<number | null>(null);
   const onFrameRef = useRef(onFrame);
 
@@ -17,13 +17,14 @@ export function useFrameLoop({ video, enabled, onFrame }: UseFrameLoopOptions): 
   }, [onFrame]);
 
   useEffect(() => {
-    if (!enabled || video === null) return;
+    if (!enabled) return;
 
     let cancelled = false;
 
     const tick = (timestampMs: number): void => {
       if (cancelled) return;
-      if (video.readyState >= 2) {
+      const video = videoRef.current;
+      if (video !== null && video.readyState >= 2) {
         try {
           const detection = detectFrame(video, timestampMs);
           onFrameRef.current(detection);
@@ -43,5 +44,5 @@ export function useFrameLoop({ video, enabled, onFrame }: UseFrameLoopOptions): 
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     };
-  }, [video, enabled]);
+  }, [enabled, videoRef]);
 }
