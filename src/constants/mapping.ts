@@ -5,6 +5,7 @@ import {
   AMPLITUDE_MAX, AMPLITUDE_MIN,
   DRIVE_MIN, DRIVE_MAX,
   FX_MIX_MIN, FX_MIX_MAX,
+  REVERB_MIX_MAX,
   LFO_DEPTH_MIN, LFO_DEPTH_MAX,
   LFO_RATE_MIN_HZ, LFO_RATE_MAX_HZ,
   MODULATION_INDEX_MIN, MODULATION_INDEX_MAX,
@@ -79,7 +80,7 @@ export const DEFAULT_GESTURE_BINDINGS: readonly GestureBinding[] = [
     target: 'reverbMix',
     curve: 'linear',
     inputMin: 0.1, inputMax: 0.8,
-    outputMin: FX_MIX_MIN, outputMax: FX_MIX_MAX,
+    outputMin: FX_MIX_MIN, outputMax: REVERB_MIX_MAX,
     smoothingMs: DEFAULT_SMOOTHING_MS,
   },
   {

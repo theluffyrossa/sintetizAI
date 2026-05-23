@@ -34,9 +34,10 @@ export const DELAY_TIME_S = 0.32;
 export const DELAY_FEEDBACK_DEFAULT = 0.35;
 export const DELAY_MIX_DEFAULT = 0;
 
-export const REVERB_DECAY_S = 2.8;
+export const REVERB_DECAY_S = 1.6;
 export const REVERB_PREDELAY_S = 0.02;
-export const REVERB_MIX_DEFAULT = 0.15;
+export const REVERB_MIX_DEFAULT = 0.08;
+export const REVERB_MIX_MAX = 0.4;
 
 export const CHORUS_FREQUENCY_HZ = 1.5;
 export const CHORUS_DEPTH = 0.7;
