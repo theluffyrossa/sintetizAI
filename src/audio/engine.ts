@@ -3,6 +3,7 @@ import type { AudioEngineStatus, SynthMode, SynthModeKind } from '@/types/audio'
 import { SubtractiveSynth } from './modes/subtractive';
 import { FmSynth } from './modes/fm';
 import { SamplerSynth } from './modes/sampler';
+import { findSamplePack } from '@/constants/samplePacks';
 
 let currentMode: SynthMode | null = null;
 let started = false;
@@ -13,7 +14,11 @@ export async function startAudio(): Promise<void> {
   started = true;
 }
 
-export async function setMode(kind: SynthModeKind): Promise<SynthMode> {
+export interface SetModeOptions {
+  readonly samplePackId?: string;
+}
+
+export async function setMode(kind: SynthModeKind, options?: SetModeOptions): Promise<SynthMode> {
   if (currentMode !== null) {
     currentMode.stop();
     currentMode.dispose();
@@ -26,9 +31,11 @@ export async function setMode(kind: SynthModeKind): Promise<SynthMode> {
     case 'fm':
       currentMode = new FmSynth();
       break;
-    case 'sampler':
-      currentMode = new SamplerSynth();
+    case 'sampler': {
+      const pack = options?.samplePackId !== undefined ? findSamplePack(options.samplePackId) : undefined;
+      currentMode = new SamplerSynth(pack?.urls);
       break;
+    }
   }
   await currentMode.start();
   return currentMode;
