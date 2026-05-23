@@ -2,6 +2,7 @@ import * as Tone from 'tone';
 import type { AudioEngineStatus, SynthMode, SynthModeKind } from '@/types/audio';
 import { SubtractiveSynth } from './modes/subtractive';
 import { FmSynth } from './modes/fm';
+import { SamplerSynth } from './modes/sampler';
 
 let currentMode: SynthMode | null = null;
 let started = false;
@@ -26,7 +27,8 @@ export async function setMode(kind: SynthModeKind): Promise<SynthMode> {
       currentMode = new FmSynth();
       break;
     case 'sampler':
-      throw new Error('Sampler mode not yet implemented');
+      currentMode = new SamplerSynth();
+      break;
   }
   await currentMode.start();
   return currentMode;
