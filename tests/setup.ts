@@ -29,6 +29,10 @@ vi.mock('tone', () => {
     FMSynth: MockNode,
     PolySynth: MockNode,
     Sampler: MockNode,
+    Analyser: vi.fn(() => ({
+      getValue: (): Float32Array => new Float32Array(512),
+      dispose: vi.fn(),
+    })),
     Frequency: (n: number): { toFrequency: () => number } => ({
       toFrequency: (): number => 440 * Math.pow(2, (n - 69) / 12),
     }),
