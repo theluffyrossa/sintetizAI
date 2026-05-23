@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
+import { MainPage } from '@/ui/pages/MainPage';
 
 export function App(): JSX.Element {
-  return <h1>SintetizAI</h1>;
+  return <MainPage />;
 }
